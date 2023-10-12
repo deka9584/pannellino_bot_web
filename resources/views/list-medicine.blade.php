@@ -6,6 +6,16 @@
     <title>Medicine</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        h2#swal2-title {
+            font-size: 24px;
+        }
+
+        div#swal2-html-container {
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
     <div class="mx-auto max-w-2xl py-12">
@@ -21,7 +31,7 @@
                         <span class="mr-1">{{$medicine->name}}</span>
                         <i class="bi bi-arrow-down-circle"></i>
                     </button>
-                    <form action="{{ route('medicines.destroy', $medicine->id) }}" method="post" class="inline-block absolute right-0 mr-4" onsubmit="return confirm('Cancellare?');">
+                    <form action="{{ route('medicines.destroy', $medicine->id) }}" method="post" class="inline-block absolute right-0 mr-4" onsubmit="onListItemDelete(event)">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-xl text-red-700"><i class="bi bi-trash3"></i></button>
@@ -59,6 +69,25 @@
                 preview.style.display = "none";
                 detail.style.display = "block";
             }
+        }
+
+        function onListItemDelete(event) {
+            event.preventDefault();
+
+            Swal.fire({
+                title: 'Eliminare la voce selezionata?',
+                showCancelButton: true,
+                showCloseButton: true,
+                color: '#000000',
+                confirmButtonText: 'Elimina',
+                cancelButtonText: 'Annulla',
+                confirmButtonColor: 'rgb(30 58 138)'
+                })
+                .then((result) => {
+                    if (result.isConfirmed && event.target != null) {
+                        event.target.submit();
+                    }
+            });
         }
     </script>
 </body>
